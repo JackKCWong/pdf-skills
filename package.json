@@ -1,0 +1,15 @@
+{
+  "name": "pdf-skills",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "description": "",
+  "dependencies": {
+    "@hyzyla/pdfium": "^2.1.12",
+    "sharp": "^0.34.5"
+  }
+}
