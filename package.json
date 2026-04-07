@@ -2,7 +2,8 @@
   "name": "pdf-skills",
   "version": "1.0.0",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "mkdir -p pdf2png && esbuild pdf2png.mjs --bundle --platform=node --outfile=pdf2png/run.js"
   },
   "keywords": [],
   "author": "",
@@ -11,5 +12,8 @@
   "dependencies": {
     "@hyzyla/pdfium": "^2.1.12",
     "sharp": "^0.34.5"
+  },
+  "devDependencies": {
+    "esbuild": "^0.21.4"
   }
 }
