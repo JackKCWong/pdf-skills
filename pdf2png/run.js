@@ -13105,8 +13105,11 @@ async function main() {
   const buff = await import_fs.promises.readFile(inputFile);
   const library = await PDFiumLibrary2.init();
   const document = await library.loadDocument(buff);
+  let totalTime = 0;
+  let pageCount = 0;
   for (const page of document.pages()) {
     console.log(`${page.number} - rendering...`);
+    const startTime = performance.now();
     const image = await page.render({
       scale: 3,
       // 3x scale (72 DPI is the default)
@@ -13114,6 +13117,21 @@ async function main() {
       // sharp function to convert raw bitmap data to PNG
     });
     await import_fs.promises.writeFile(`${outputDir}/${page.number}.png`, Buffer.from(image.data));
+    const endTime = performance.now();
+    const pageTime = endTime - startTime;
+    totalTime += pageTime;
+    pageCount++;
+    console.log(`${page.number} - rendered in ${pageTime.toFixed(2)} ms`);
+  }
+  if (pageCount > 0) {
+    const avgTimePerPage = totalTime / pageCount;
+    const pagesPerSecond = pageCount / (totalTime / 1e3);
+    console.log(`
+Summary:`);
+    console.log(`Total pages: ${pageCount}`);
+    console.log(`Total time: ${totalTime.toFixed(2)} ms`);
+    console.log(`Average time per page: ${avgTimePerPage.toFixed(2)} ms`);
+    console.log(`Pages per second: ${pagesPerSecond.toFixed(2)}`);
   }
   document.destroy();
   library.destroy();

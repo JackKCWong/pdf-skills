@@ -45,8 +45,13 @@ async function main() {
 
   // Iterate over the pages, render them to PNG images and
   // save to the output folder
+  let totalTime = 0;
+  let pageCount = 0;
+  
   for (const page of document.pages()) {
     console.log(`${page.number} - rendering...`);
+    
+    const startTime = performance.now();
 
     // Render PDF page to PNG image
     const image = await page.render({
@@ -56,6 +61,24 @@ async function main() {
 
     // Save the PNG image to the output folder
     await fs.writeFile(`${outputDir}/${page.number}.png`, Buffer.from(image.data));
+    
+    const endTime = performance.now();
+    const pageTime = endTime - startTime;
+    totalTime += pageTime;
+    pageCount++;
+    
+    console.log(`${page.number} - rendered in ${pageTime.toFixed(2)} ms`);
+  }
+  
+  // Summary
+  if (pageCount > 0) {
+    const avgTimePerPage = totalTime / pageCount;
+    const pagesPerSecond = pageCount / (totalTime / 1000);
+    console.log(`\nSummary:`);
+    console.log(`Total pages: ${pageCount}`);
+    console.log(`Total time: ${totalTime.toFixed(2)} ms`);
+    console.log(`Average time per page: ${avgTimePerPage.toFixed(2)} ms`);
+    console.log(`Pages per second: ${pagesPerSecond.toFixed(2)}`);
   }
 
   // Do not forget to destroy the document and the library
