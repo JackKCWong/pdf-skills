@@ -1,5 +1,6 @@
 import { PDFiumLibrary } from "@hyzyla/pdfium";
 import { promises as fs } from 'fs';
+import path from 'path';
 import sharp from 'sharp';
 
 
@@ -22,11 +23,23 @@ async function renderFunction(options) {
 
 
 async function main() {
-  const inputFile = process.argv[2];
-  const outputDir = process.argv[3];
+  let inputFile;
+  let outputDir;
+  let verbose = false;
+
+  // Parse command line arguments
+  for (let i = 2; i < process.argv.length; i++) {
+    if (process.argv[i] === '-v') {
+      verbose = true;
+    } else if (!inputFile) {
+      inputFile = process.argv[i];
+    } else if (!outputDir) {
+      outputDir = process.argv[i];
+    }
+  }
 
   if (!inputFile || !outputDir) {
-    console.error('Usage: node pdf2png.js <input.pdf> <output_dir>');
+    console.error('Usage: node pdf2png.js [ -v ] <input.pdf> <output_dir>');
     process.exit(1);
   }
 
@@ -47,9 +60,11 @@ async function main() {
   // save to the output folder
   let totalTime = 0;
   let pageCount = 0;
-  
+
   for (const page of document.pages()) {
-    console.log(`${page.number} - rendering...`);
+    if (verbose) {
+      console.log(`${page.number} - rendering...`);
+    }
     
     const startTime = performance.now();
 
@@ -60,18 +75,22 @@ async function main() {
     });
 
     // Save the PNG image to the output folder
-    await fs.writeFile(`${outputDir}/${page.number}.png`, Buffer.from(image.data));
+    const outputPath = path.resolve(`${outputDir}/page_${page.number}.png`);
+    await fs.writeFile(outputPath, Buffer.from(image.data));
     
     const endTime = performance.now();
     const pageTime = endTime - startTime;
     totalTime += pageTime;
     pageCount++;
     
-    console.log(`${page.number} - rendered in ${pageTime.toFixed(2)} ms`);
+    if (verbose) {
+      console.log(`${page.number} - rendered in ${pageTime.toFixed(2)} ms`);
+    }
+    console.log(`saved ${outputPath}`);
   }
   
   // Summary
-  if (pageCount > 0) {
+  if (verbose && pageCount > 0) {
     const avgTimePerPage = totalTime / pageCount;
     const pagesPerSecond = pageCount / (totalTime / 1000);
     console.log(`\nSummary:`);

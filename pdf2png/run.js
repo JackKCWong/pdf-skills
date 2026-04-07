@@ -114,16 +114,16 @@ var require_filesystem = __commonJS({
     var LDD_PATH = "/usr/bin/ldd";
     var SELF_PATH = "/proc/self/exe";
     var MAX_LENGTH = 2048;
-    var readFileSync = (path) => {
-      const fd = fs2.openSync(path, "r");
+    var readFileSync = (path2) => {
+      const fd = fs2.openSync(path2, "r");
       const buffer = Buffer.alloc(MAX_LENGTH);
       const bytesRead = fs2.readSync(fd, buffer, 0, MAX_LENGTH, 0);
       fs2.close(fd, () => {
       });
       return buffer.subarray(0, bytesRead);
     };
-    var readFile = (path) => new Promise((resolve, reject) => {
-      fs2.open(path, "r", (err, fd) => {
+    var readFile = (path2) => new Promise((resolve, reject) => {
+      fs2.open(path2, "r", (err, fd) => {
         if (err) {
           reject(err);
         } else {
@@ -242,11 +242,11 @@ var require_detect_libc = __commonJS({
       }
       return null;
     };
-    var familyFromInterpreterPath = (path) => {
-      if (path) {
-        if (path.includes("/ld-musl-")) {
+    var familyFromInterpreterPath = (path2) => {
+      if (path2) {
+        if (path2.includes("/ld-musl-")) {
           return MUSL;
-        } else if (path.includes("/ld-linux-")) {
+        } else if (path2.includes("/ld-linux-")) {
           return GLIBC;
         }
       }
@@ -293,8 +293,8 @@ var require_detect_libc = __commonJS({
       cachedFamilyInterpreter = null;
       try {
         const selfContent = await readFile(SELF_PATH);
-        const path = interpreterPath(selfContent);
-        cachedFamilyInterpreter = familyFromInterpreterPath(path);
+        const path2 = interpreterPath(selfContent);
+        cachedFamilyInterpreter = familyFromInterpreterPath(path2);
       } catch (e) {
       }
       return cachedFamilyInterpreter;
@@ -306,8 +306,8 @@ var require_detect_libc = __commonJS({
       cachedFamilyInterpreter = null;
       try {
         const selfContent = readFileSync(SELF_PATH);
-        const path = interpreterPath(selfContent);
-        cachedFamilyInterpreter = familyFromInterpreterPath(path);
+        const path2 = interpreterPath(selfContent);
+        cachedFamilyInterpreter = familyFromInterpreterPath(path2);
       } catch (e) {
       }
       return cachedFamilyInterpreter;
@@ -2020,18 +2020,18 @@ var require_sharp = __commonJS({
       `@img/sharp-${runtimePlatform}/sharp.node`,
       "@img/sharp-wasm32/sharp.node"
     ];
-    var path;
+    var path2;
     var sharp2;
     var errors = [];
-    for (path of paths) {
+    for (path2 of paths) {
       try {
-        sharp2 = require(path);
+        sharp2 = require(path2);
         break;
       } catch (err) {
         errors.push(err);
       }
     }
-    if (sharp2 && path.startsWith("@img/sharp-linux-x64") && !sharp2._isUsingX64V2()) {
+    if (sharp2 && path2.startsWith("@img/sharp-linux-x64") && !sharp2._isUsingX64V2()) {
       const err = new Error("Prebuilt binaries for linux-x64 require v2 microarchitecture");
       err.code = "Unsupported CPU";
       errors.push(err);
@@ -4936,15 +4936,15 @@ var require_color = __commonJS({
       };
     }
     function wrapConversion(toModel, graph) {
-      const path = [graph[toModel].parent, toModel];
+      const path2 = [graph[toModel].parent, toModel];
       let fn = conversions_default[graph[toModel].parent][toModel];
       let cur = graph[toModel].parent;
       while (graph[cur].parent) {
-        path.unshift(graph[cur].parent);
+        path2.unshift(graph[cur].parent);
         fn = link(conversions_default[graph[cur].parent][cur], fn);
         cur = graph[cur].parent;
       }
-      fn.conversion = path;
+      fn.conversion = path2;
       return fn;
     }
     function route(fromModel) {
@@ -5557,7 +5557,7 @@ var require_channel = __commonJS({
 // node_modules/sharp/lib/output.js
 var require_output = __commonJS({
   "node_modules/sharp/lib/output.js"(exports2, module2) {
-    var path = require("node:path");
+    var path2 = require("node:path");
     var is = require_is();
     var sharp2 = require_sharp();
     var formats = /* @__PURE__ */ new Map([
@@ -5588,9 +5588,9 @@ var require_output = __commonJS({
       let err;
       if (!is.string(fileOut)) {
         err = new Error("Missing output file path");
-      } else if (is.string(this.options.input.file) && path.resolve(this.options.input.file) === path.resolve(fileOut)) {
+      } else if (is.string(this.options.input.file) && path2.resolve(this.options.input.file) === path2.resolve(fileOut)) {
         err = new Error("Cannot use same file for input and output");
-      } else if (jp2Regex.test(path.extname(fileOut)) && !this.constructor.format.jp2k.output.file) {
+      } else if (jp2Regex.test(path2.extname(fileOut)) && !this.constructor.format.jp2k.output.file) {
         err = errJp2Save();
       }
       if (err) {
@@ -7287,11 +7287,11 @@ var PDFiumModule = /* @__PURE__ */ (() => {
     var thisProgram = "./this.program";
     var _scriptName = import_meta.url;
     var scriptDirectory = "";
-    function locateFile(path) {
+    function locateFile(path2) {
       if (Module["locateFile"]) {
-        return Module["locateFile"](path, scriptDirectory);
+        return Module["locateFile"](path2, scriptDirectory);
       }
-      return scriptDirectory + path;
+      return scriptDirectory + path2;
     }
     var readAsync, readBinary;
     if (ENVIRONMENT_IS_NODE) {
@@ -7756,7 +7756,7 @@ var PDFiumModule = /* @__PURE__ */ (() => {
     };
     var syscallGetVarargP = syscallGetVarargI;
     var PATH = {
-      isAbs: (path) => path.charAt(0) === "/",
+      isAbs: (path2) => path2.charAt(0) === "/",
       splitPath: (filename) => {
         var splitPathRe = /^(\/?|)([\s\S]*?)((?:\.{1,2}|[^\/]+?|)(\.[^.\/]*|))(?:[\/]*)$/;
         return splitPathRe.exec(filename).slice(1);
@@ -7782,22 +7782,22 @@ var PDFiumModule = /* @__PURE__ */ (() => {
         }
         return parts;
       },
-      normalize: (path) => {
-        var isAbsolute = PATH.isAbs(path), trailingSlash = path.slice(-1) === "/";
-        path = PATH.normalizeArray(
-          path.split("/").filter((p) => !!p),
+      normalize: (path2) => {
+        var isAbsolute = PATH.isAbs(path2), trailingSlash = path2.slice(-1) === "/";
+        path2 = PATH.normalizeArray(
+          path2.split("/").filter((p) => !!p),
           !isAbsolute
         ).join("/");
-        if (!path && !isAbsolute) {
-          path = ".";
+        if (!path2 && !isAbsolute) {
+          path2 = ".";
         }
-        if (path && trailingSlash) {
-          path += "/";
+        if (path2 && trailingSlash) {
+          path2 += "/";
         }
-        return (isAbsolute ? "/" : "") + path;
+        return (isAbsolute ? "/" : "") + path2;
       },
-      dirname: (path) => {
-        var result = PATH.splitPath(path), root = result[0], dir = result[1];
+      dirname: (path2) => {
+        var result = PATH.splitPath(path2), root = result[0], dir = result[1];
         if (!root && !dir) {
           return ".";
         }
@@ -7806,7 +7806,7 @@ var PDFiumModule = /* @__PURE__ */ (() => {
         }
         return root + dir;
       },
-      basename: (path) => path && path.match(/([^\/]+|\/)\/*$/)[1],
+      basename: (path2) => path2 && path2.match(/([^\/]+|\/)\/*$/)[1],
       join: (...paths) => PATH.normalize(paths.join("/")),
       join2: (l, r) => PATH.normalize(l + "/" + r)
     };
@@ -7824,14 +7824,14 @@ var PDFiumModule = /* @__PURE__ */ (() => {
       resolve: (...args) => {
         var resolvedPath = "", resolvedAbsolute = false;
         for (var i = args.length - 1; i >= -1 && !resolvedAbsolute; i--) {
-          var path = i >= 0 ? args[i] : FS.cwd();
-          if (typeof path != "string") {
+          var path2 = i >= 0 ? args[i] : FS.cwd();
+          if (typeof path2 != "string") {
             throw new TypeError("Arguments to path.resolve must be strings");
-          } else if (!path) {
+          } else if (!path2) {
             return "";
           }
-          resolvedPath = path + "/" + resolvedPath;
-          resolvedAbsolute = PATH.isAbs(path);
+          resolvedPath = path2 + "/" + resolvedPath;
+          resolvedAbsolute = PATH.isAbs(path2);
         }
         resolvedPath = PATH.normalizeArray(
           resolvedPath.split("/").filter((p) => !!p),
@@ -8747,16 +8747,16 @@ var PDFiumModule = /* @__PURE__ */ (() => {
           return FS.isChrdev(this.mode);
         }
       },
-      lookupPath(path, opts = {}) {
-        if (!path) {
+      lookupPath(path2, opts = {}) {
+        if (!path2) {
           throw new FS.ErrnoError(44);
         }
         opts.follow_mount ??= true;
-        if (!PATH.isAbs(path)) {
-          path = FS.cwd() + "/" + path;
+        if (!PATH.isAbs(path2)) {
+          path2 = FS.cwd() + "/" + path2;
         }
         linkloop: for (var nlinks = 0; nlinks < 40; nlinks++) {
-          var parts = path.split("/").filter((p) => !!p);
+          var parts = path2.split("/").filter((p) => !!p);
           var current = FS.root;
           var current_path = "/";
           for (var i = 0; i < parts.length; i++) {
@@ -8770,7 +8770,7 @@ var PDFiumModule = /* @__PURE__ */ (() => {
             if (parts[i] === "..") {
               current_path = PATH.dirname(current_path);
               if (FS.isRoot(current)) {
-                path = current_path + "/" + parts.slice(i + 1).join("/");
+                path2 = current_path + "/" + parts.slice(i + 1).join("/");
                 continue linkloop;
               } else {
                 current = current.parent;
@@ -8797,7 +8797,7 @@ var PDFiumModule = /* @__PURE__ */ (() => {
               if (!PATH.isAbs(link)) {
                 link = PATH.dirname(current_path) + "/" + link;
               }
-              path = link + "/" + parts.slice(i + 1).join("/");
+              path2 = link + "/" + parts.slice(i + 1).join("/");
               continue linkloop;
             }
           }
@@ -8806,14 +8806,14 @@ var PDFiumModule = /* @__PURE__ */ (() => {
         throw new FS.ErrnoError(32);
       },
       getPath(node) {
-        var path;
+        var path2;
         while (true) {
           if (FS.isRoot(node)) {
             var mount = node.mount.mountpoint;
-            if (!path) return mount;
-            return mount[mount.length - 1] !== "/" ? `${mount}/${path}` : mount + path;
+            if (!path2) return mount;
+            return mount[mount.length - 1] !== "/" ? `${mount}/${path2}` : mount + path2;
           }
-          path = path ? `${node.name}/${path}` : node.name;
+          path2 = path2 ? `${node.name}/${path2}` : node.name;
           node = node.parent;
         }
       },
@@ -9140,10 +9140,10 @@ var PDFiumModule = /* @__PURE__ */ (() => {
       lookup(parent, name) {
         return parent.node_ops.lookup(parent, name);
       },
-      mknod(path, mode, dev) {
-        var lookup = FS.lookupPath(path, { parent: true });
+      mknod(path2, mode, dev) {
+        var lookup = FS.lookupPath(path2, { parent: true });
         var parent = lookup.node;
-        var name = PATH.basename(path);
+        var name = PATH.basename(path2);
         if (!name) {
           throw new FS.ErrnoError(28);
         }
@@ -9159,8 +9159,8 @@ var PDFiumModule = /* @__PURE__ */ (() => {
         }
         return parent.node_ops.mknod(parent, name, mode, dev);
       },
-      statfs(path) {
-        return FS.statfsNode(FS.lookupPath(path, { follow: true }).node);
+      statfs(path2) {
+        return FS.statfsNode(FS.lookupPath(path2, { follow: true }).node);
       },
       statfsStream(stream) {
         return FS.statfsNode(stream.node);
@@ -9183,22 +9183,22 @@ var PDFiumModule = /* @__PURE__ */ (() => {
         }
         return rtn;
       },
-      create(path, mode = 438) {
+      create(path2, mode = 438) {
         mode &= 4095;
         mode |= 32768;
-        return FS.mknod(path, mode, 0);
+        return FS.mknod(path2, mode, 0);
       },
-      mkdir(path, mode = 511) {
+      mkdir(path2, mode = 511) {
         mode &= 511 | 512;
         mode |= 16384;
-        return FS.mknod(path, mode, 0);
+        return FS.mknod(path2, mode, 0);
       },
-      mkdirTree(path, mode) {
-        var dirs = path.split("/");
+      mkdirTree(path2, mode) {
+        var dirs = path2.split("/");
         var d = "";
         for (var dir of dirs) {
           if (!dir) continue;
-          if (d || PATH.isAbs(path)) d += "/";
+          if (d || PATH.isAbs(path2)) d += "/";
           d += dir;
           try {
             FS.mkdir(d, mode);
@@ -9207,13 +9207,13 @@ var PDFiumModule = /* @__PURE__ */ (() => {
           }
         }
       },
-      mkdev(path, mode, dev) {
+      mkdev(path2, mode, dev) {
         if (typeof dev == "undefined") {
           dev = mode;
           mode = 438;
         }
         mode |= 8192;
-        return FS.mknod(path, mode, dev);
+        return FS.mknod(path2, mode, dev);
       },
       symlink(oldpath, newpath) {
         if (!PATH_FS.resolve(oldpath)) {
@@ -9296,10 +9296,10 @@ var PDFiumModule = /* @__PURE__ */ (() => {
           FS.hashAddNode(old_node);
         }
       },
-      rmdir(path) {
-        var lookup = FS.lookupPath(path, { parent: true });
+      rmdir(path2) {
+        var lookup = FS.lookupPath(path2, { parent: true });
         var parent = lookup.node;
-        var name = PATH.basename(path);
+        var name = PATH.basename(path2);
         var node = FS.lookupNode(parent, name);
         var errCode = FS.mayDelete(parent, name, true);
         if (errCode) {
@@ -9314,19 +9314,19 @@ var PDFiumModule = /* @__PURE__ */ (() => {
         parent.node_ops.rmdir(parent, name);
         FS.destroyNode(node);
       },
-      readdir(path) {
-        var lookup = FS.lookupPath(path, { follow: true });
+      readdir(path2) {
+        var lookup = FS.lookupPath(path2, { follow: true });
         var node = lookup.node;
         var readdir = FS.checkOpExists(node.node_ops.readdir, 54);
         return readdir(node);
       },
-      unlink(path) {
-        var lookup = FS.lookupPath(path, { parent: true });
+      unlink(path2) {
+        var lookup = FS.lookupPath(path2, { parent: true });
         var parent = lookup.node;
         if (!parent) {
           throw new FS.ErrnoError(44);
         }
-        var name = PATH.basename(path);
+        var name = PATH.basename(path2);
         var node = FS.lookupNode(parent, name);
         var errCode = FS.mayDelete(parent, name, false);
         if (errCode) {
@@ -9341,8 +9341,8 @@ var PDFiumModule = /* @__PURE__ */ (() => {
         parent.node_ops.unlink(parent, name);
         FS.destroyNode(node);
       },
-      readlink(path) {
-        var lookup = FS.lookupPath(path);
+      readlink(path2) {
+        var lookup = FS.lookupPath(path2);
         var link = lookup.node;
         if (!link) {
           throw new FS.ErrnoError(44);
@@ -9352,8 +9352,8 @@ var PDFiumModule = /* @__PURE__ */ (() => {
         }
         return link.node_ops.readlink(link);
       },
-      stat(path, dontFollow) {
-        var lookup = FS.lookupPath(path, { follow: !dontFollow });
+      stat(path2, dontFollow) {
+        var lookup = FS.lookupPath(path2, { follow: !dontFollow });
         var node = lookup.node;
         var getattr = FS.checkOpExists(node.node_ops.getattr, 63);
         return getattr(node);
@@ -9367,8 +9367,8 @@ var PDFiumModule = /* @__PURE__ */ (() => {
         FS.checkOpExists(getattr, 63);
         return getattr(arg);
       },
-      lstat(path) {
-        return FS.stat(path, true);
+      lstat(path2) {
+        return FS.stat(path2, true);
       },
       doChmod(stream, node, mode, dontFollow) {
         FS.doSetAttr(stream, node, {
@@ -9377,18 +9377,18 @@ var PDFiumModule = /* @__PURE__ */ (() => {
           dontFollow
         });
       },
-      chmod(path, mode, dontFollow) {
+      chmod(path2, mode, dontFollow) {
         var node;
-        if (typeof path == "string") {
-          var lookup = FS.lookupPath(path, { follow: !dontFollow });
+        if (typeof path2 == "string") {
+          var lookup = FS.lookupPath(path2, { follow: !dontFollow });
           node = lookup.node;
         } else {
-          node = path;
+          node = path2;
         }
         FS.doChmod(null, node, mode, dontFollow);
       },
-      lchmod(path, mode) {
-        FS.chmod(path, mode, true);
+      lchmod(path2, mode) {
+        FS.chmod(path2, mode, true);
       },
       fchmod(fd, mode) {
         var stream = FS.getStreamChecked(fd);
@@ -9397,18 +9397,18 @@ var PDFiumModule = /* @__PURE__ */ (() => {
       doChown(stream, node, dontFollow) {
         FS.doSetAttr(stream, node, { timestamp: Date.now(), dontFollow });
       },
-      chown(path, uid, gid, dontFollow) {
+      chown(path2, uid, gid, dontFollow) {
         var node;
-        if (typeof path == "string") {
-          var lookup = FS.lookupPath(path, { follow: !dontFollow });
+        if (typeof path2 == "string") {
+          var lookup = FS.lookupPath(path2, { follow: !dontFollow });
           node = lookup.node;
         } else {
-          node = path;
+          node = path2;
         }
         FS.doChown(null, node, dontFollow);
       },
-      lchown(path, uid, gid) {
-        FS.chown(path, uid, gid, true);
+      lchown(path2, uid, gid) {
+        FS.chown(path2, uid, gid, true);
       },
       fchown(fd, uid, gid) {
         var stream = FS.getStreamChecked(fd);
@@ -9427,16 +9427,16 @@ var PDFiumModule = /* @__PURE__ */ (() => {
         }
         FS.doSetAttr(stream, node, { size: len, timestamp: Date.now() });
       },
-      truncate(path, len) {
+      truncate(path2, len) {
         if (len < 0) {
           throw new FS.ErrnoError(28);
         }
         var node;
-        if (typeof path == "string") {
-          var lookup = FS.lookupPath(path, { follow: true });
+        if (typeof path2 == "string") {
+          var lookup = FS.lookupPath(path2, { follow: true });
           node = lookup.node;
         } else {
-          node = path;
+          node = path2;
         }
         FS.doTruncate(null, node, len);
       },
@@ -9447,14 +9447,14 @@ var PDFiumModule = /* @__PURE__ */ (() => {
         }
         FS.doTruncate(stream, stream.node, len);
       },
-      utime(path, atime, mtime) {
-        var lookup = FS.lookupPath(path, { follow: true });
+      utime(path2, atime, mtime) {
+        var lookup = FS.lookupPath(path2, { follow: true });
         var node = lookup.node;
         var setattr = FS.checkOpExists(node.node_ops.setattr, 63);
         setattr(node, { atime, mtime });
       },
-      open(path, flags, mode = 438) {
-        if (path === "") {
+      open(path2, flags, mode = 438) {
+        if (path2 === "") {
           throw new FS.ErrnoError(44);
         }
         flags = typeof flags == "string" ? FS_modeStringToFlags(flags) : flags;
@@ -9465,16 +9465,16 @@ var PDFiumModule = /* @__PURE__ */ (() => {
         }
         var node;
         var isDirPath;
-        if (typeof path == "object") {
-          node = path;
+        if (typeof path2 == "object") {
+          node = path2;
         } else {
-          isDirPath = path.endsWith("/");
-          var lookup = FS.lookupPath(path, {
+          isDirPath = path2.endsWith("/");
+          var lookup = FS.lookupPath(path2, {
             follow: !(flags & 131072),
             noent_okay: true
           });
           node = lookup.node;
-          path = lookup.path;
+          path2 = lookup.path;
         }
         var created = false;
         if (flags & 64) {
@@ -9485,7 +9485,7 @@ var PDFiumModule = /* @__PURE__ */ (() => {
           } else if (isDirPath) {
             throw new FS.ErrnoError(31);
           } else {
-            node = FS.mknod(path, mode | 511, 0);
+            node = FS.mknod(path2, mode | 511, 0);
             created = true;
           }
         }
@@ -9525,8 +9525,8 @@ var PDFiumModule = /* @__PURE__ */ (() => {
           FS.chmod(node, mode & 511);
         }
         if (Module["logReadFiles"] && !(flags & 1)) {
-          if (!(path in FS.readFiles)) {
-            FS.readFiles[path] = 1;
+          if (!(path2 in FS.readFiles)) {
+            FS.readFiles[path2] = 1;
           }
         }
         return stream;
@@ -9649,14 +9649,14 @@ var PDFiumModule = /* @__PURE__ */ (() => {
         }
         return stream.stream_ops.ioctl(stream, cmd, arg);
       },
-      readFile(path, opts = {}) {
+      readFile(path2, opts = {}) {
         opts.flags = opts.flags || 0;
         opts.encoding = opts.encoding || "binary";
         if (opts.encoding !== "utf8" && opts.encoding !== "binary") {
           throw new Error(`Invalid encoding type "${opts.encoding}"`);
         }
-        var stream = FS.open(path, opts.flags);
-        var stat = FS.stat(path);
+        var stream = FS.open(path2, opts.flags);
+        var stat = FS.stat(path2);
         var length = stat.size;
         var buf = new Uint8Array(length);
         FS.read(stream, buf, 0, length, 0);
@@ -9666,9 +9666,9 @@ var PDFiumModule = /* @__PURE__ */ (() => {
         FS.close(stream);
         return buf;
       },
-      writeFile(path, data, opts = {}) {
+      writeFile(path2, data, opts = {}) {
         opts.flags = opts.flags || 577;
-        var stream = FS.open(path, opts.flags, opts.mode);
+        var stream = FS.open(path2, opts.flags, opts.mode);
         if (typeof data == "string") {
           data = new Uint8Array(intArrayFromString(data));
         }
@@ -9680,8 +9680,8 @@ var PDFiumModule = /* @__PURE__ */ (() => {
         FS.close(stream);
       },
       cwd: () => FS.currentPath,
-      chdir(path) {
-        var lookup = FS.lookupPath(path, { follow: true });
+      chdir(path2) {
+        var lookup = FS.lookupPath(path2, { follow: true });
         if (lookup.node === null) {
           throw new FS.ErrnoError(44);
         }
@@ -9808,17 +9808,17 @@ var PDFiumModule = /* @__PURE__ */ (() => {
           }
         }
       },
-      findObject(path, dontResolveLastLink) {
-        var ret = FS.analyzePath(path, dontResolveLastLink);
+      findObject(path2, dontResolveLastLink) {
+        var ret = FS.analyzePath(path2, dontResolveLastLink);
         if (!ret.exists) {
           return null;
         }
         return ret.object;
       },
-      analyzePath(path, dontResolveLastLink) {
+      analyzePath(path2, dontResolveLastLink) {
         try {
-          var lookup = FS.lookupPath(path, { follow: !dontResolveLastLink });
-          path = lookup.path;
+          var lookup = FS.lookupPath(path2, { follow: !dontResolveLastLink });
+          path2 = lookup.path;
         } catch (e) {
         }
         var ret = {
@@ -9833,12 +9833,12 @@ var PDFiumModule = /* @__PURE__ */ (() => {
           parentObject: null
         };
         try {
-          var lookup = FS.lookupPath(path, { parent: true });
+          var lookup = FS.lookupPath(path2, { parent: true });
           ret.parentExists = true;
           ret.parentPath = lookup.path;
           ret.parentObject = lookup.node;
-          ret.name = PATH.basename(path);
-          lookup = FS.lookupPath(path, { follow: !dontResolveLastLink });
+          ret.name = PATH.basename(path2);
+          lookup = FS.lookupPath(path2, { follow: !dontResolveLastLink });
           ret.exists = true;
           ret.path = lookup.path;
           ret.object = lookup.node;
@@ -9849,9 +9849,9 @@ var PDFiumModule = /* @__PURE__ */ (() => {
         }
         return ret;
       },
-      createPath(parent, path, canRead, canWrite) {
+      createPath(parent, path2, canRead, canWrite) {
         parent = typeof parent == "string" ? parent : FS.getPath(parent);
-        var parts = path.split("/").reverse();
+        var parts = path2.split("/").reverse();
         while (parts.length) {
           var part = parts.pop();
           if (!part) continue;
@@ -9866,18 +9866,18 @@ var PDFiumModule = /* @__PURE__ */ (() => {
         return current;
       },
       createFile(parent, name, properties, canRead, canWrite) {
-        var path = PATH.join2(typeof parent == "string" ? parent : FS.getPath(parent), name);
+        var path2 = PATH.join2(typeof parent == "string" ? parent : FS.getPath(parent), name);
         var mode = FS_getMode(canRead, canWrite);
-        return FS.create(path, mode);
+        return FS.create(path2, mode);
       },
       createDataFile(parent, name, data, canRead, canWrite, canOwn) {
-        var path = name;
+        var path2 = name;
         if (parent) {
           parent = typeof parent == "string" ? parent : FS.getPath(parent);
-          path = name ? PATH.join2(parent, name) : parent;
+          path2 = name ? PATH.join2(parent, name) : parent;
         }
         var mode = FS_getMode(canRead, canWrite);
-        var node = FS.create(path, mode);
+        var node = FS.create(path2, mode);
         if (data) {
           if (typeof data == "string") {
             var arr = new Array(data.length);
@@ -9892,7 +9892,7 @@ var PDFiumModule = /* @__PURE__ */ (() => {
         }
       },
       createDevice(parent, name, input, output) {
-        var path = PATH.join2(typeof parent == "string" ? parent : FS.getPath(parent), name);
+        var path2 = PATH.join2(typeof parent == "string" ? parent : FS.getPath(parent), name);
         var mode = FS_getMode(!!input, !!output);
         FS.createDevice.major ??= 64;
         var dev = FS.makedev(FS.createDevice.major++, 0);
@@ -9940,7 +9940,7 @@ var PDFiumModule = /* @__PURE__ */ (() => {
             return i;
           }
         });
-        return FS.mkdev(path, mode, dev);
+        return FS.mkdev(path2, mode, dev);
       },
       forceLoadFile(obj) {
         if (obj.isDevice || obj.isFolder || obj.link || obj.contents) return true;
@@ -10120,9 +10120,9 @@ var PDFiumModule = /* @__PURE__ */ (() => {
     };
     var SYSCALLS = {
       DEFAULT_POLLMASK: 5,
-      calculateAt(dirfd, path, allowEmpty) {
-        if (PATH.isAbs(path)) {
-          return path;
+      calculateAt(dirfd, path2, allowEmpty) {
+        if (PATH.isAbs(path2)) {
+          return path2;
         }
         var dir;
         if (dirfd === -100) {
@@ -10131,13 +10131,13 @@ var PDFiumModule = /* @__PURE__ */ (() => {
           var dirstream = SYSCALLS.getStreamFromFD(dirfd);
           dir = dirstream.path;
         }
-        if (path.length == 0) {
+        if (path2.length == 0) {
           if (!allowEmpty) {
             throw new FS.ErrnoError(44);
           }
           return dir;
         }
-        return dir + "/" + path;
+        return dir + "/" + path2;
       },
       writeStat(buf, stat) {
         HEAP32[buf >> 2] = stat.dev;
@@ -10408,68 +10408,68 @@ var PDFiumModule = /* @__PURE__ */ (() => {
         return -e.errno;
       }
     }
-    function ___syscall_lstat64(path, buf) {
+    function ___syscall_lstat64(path2, buf) {
       try {
-        path = SYSCALLS.getStr(path);
-        return SYSCALLS.writeStat(buf, FS.lstat(path));
+        path2 = SYSCALLS.getStr(path2);
+        return SYSCALLS.writeStat(buf, FS.lstat(path2));
       } catch (e) {
         if (typeof FS == "undefined" || !(e.name === "ErrnoError")) throw e;
         return -e.errno;
       }
     }
-    function ___syscall_newfstatat(dirfd, path, buf, flags) {
+    function ___syscall_newfstatat(dirfd, path2, buf, flags) {
       try {
-        path = SYSCALLS.getStr(path);
+        path2 = SYSCALLS.getStr(path2);
         var nofollow = flags & 256;
         var allowEmpty = flags & 4096;
         flags = flags & ~6400;
         assert(!flags, `unknown flags in __syscall_newfstatat: ${flags}`);
-        path = SYSCALLS.calculateAt(dirfd, path, allowEmpty);
-        return SYSCALLS.writeStat(buf, nofollow ? FS.lstat(path) : FS.stat(path));
+        path2 = SYSCALLS.calculateAt(dirfd, path2, allowEmpty);
+        return SYSCALLS.writeStat(buf, nofollow ? FS.lstat(path2) : FS.stat(path2));
       } catch (e) {
         if (typeof FS == "undefined" || !(e.name === "ErrnoError")) throw e;
         return -e.errno;
       }
     }
-    function ___syscall_openat(dirfd, path, flags, varargs) {
+    function ___syscall_openat(dirfd, path2, flags, varargs) {
       SYSCALLS.varargs = varargs;
       try {
-        path = SYSCALLS.getStr(path);
-        path = SYSCALLS.calculateAt(dirfd, path);
+        path2 = SYSCALLS.getStr(path2);
+        path2 = SYSCALLS.calculateAt(dirfd, path2);
         var mode = varargs ? syscallGetVarargI() : 0;
-        return FS.open(path, flags, mode).fd;
+        return FS.open(path2, flags, mode).fd;
       } catch (e) {
         if (typeof FS == "undefined" || !(e.name === "ErrnoError")) throw e;
         return -e.errno;
       }
     }
-    function ___syscall_rmdir(path) {
+    function ___syscall_rmdir(path2) {
       try {
-        path = SYSCALLS.getStr(path);
-        FS.rmdir(path);
+        path2 = SYSCALLS.getStr(path2);
+        FS.rmdir(path2);
         return 0;
       } catch (e) {
         if (typeof FS == "undefined" || !(e.name === "ErrnoError")) throw e;
         return -e.errno;
       }
     }
-    function ___syscall_stat64(path, buf) {
+    function ___syscall_stat64(path2, buf) {
       try {
-        path = SYSCALLS.getStr(path);
-        return SYSCALLS.writeStat(buf, FS.stat(path));
+        path2 = SYSCALLS.getStr(path2);
+        return SYSCALLS.writeStat(buf, FS.stat(path2));
       } catch (e) {
         if (typeof FS == "undefined" || !(e.name === "ErrnoError")) throw e;
         return -e.errno;
       }
     }
-    function ___syscall_unlinkat(dirfd, path, flags) {
+    function ___syscall_unlinkat(dirfd, path2, flags) {
       try {
-        path = SYSCALLS.getStr(path);
-        path = SYSCALLS.calculateAt(dirfd, path);
+        path2 = SYSCALLS.getStr(path2);
+        path2 = SYSCALLS.calculateAt(dirfd, path2);
         if (!flags) {
-          FS.unlink(path);
+          FS.unlink(path2);
         } else if (flags === 512) {
-          FS.rmdir(path);
+          FS.rmdir(path2);
         } else {
           return -28;
         }
@@ -13084,6 +13084,7 @@ var PDFiumLibrary2 = class extends PDFiumLibrary$1 {
 
 // pdf2png.mjs
 var import_fs = require("fs");
+var import_path = __toESM(require("path"), 1);
 var import_sharp = __toESM(require_lib(), 1);
 async function renderFunction(options) {
   return await (0, import_sharp.default)(options.data, {
@@ -13095,10 +13096,20 @@ async function renderFunction(options) {
   }).png().toBuffer();
 }
 async function main() {
-  const inputFile = process.argv[2];
-  const outputDir = process.argv[3];
+  let inputFile;
+  let outputDir;
+  let verbose = false;
+  for (let i = 2; i < process.argv.length; i++) {
+    if (process.argv[i] === "-v") {
+      verbose = true;
+    } else if (!inputFile) {
+      inputFile = process.argv[i];
+    } else if (!outputDir) {
+      outputDir = process.argv[i];
+    }
+  }
   if (!inputFile || !outputDir) {
-    console.error("Usage: node pdf2png.js <input.pdf> <output_dir>");
+    console.error("Usage: node pdf2png.js [ -v ] <input.pdf> <output_dir>");
     process.exit(1);
   }
   await import_fs.promises.mkdir(outputDir, { recursive: true });
@@ -13108,7 +13119,9 @@ async function main() {
   let totalTime = 0;
   let pageCount = 0;
   for (const page of document.pages()) {
-    console.log(`${page.number} - rendering...`);
+    if (verbose) {
+      console.log(`${page.number} - rendering...`);
+    }
     const startTime = performance.now();
     const image = await page.render({
       scale: 3,
@@ -13116,14 +13129,18 @@ async function main() {
       render: renderFunction
       // sharp function to convert raw bitmap data to PNG
     });
-    await import_fs.promises.writeFile(`${outputDir}/${page.number}.png`, Buffer.from(image.data));
+    const outputPath = import_path.default.resolve(`${outputDir}/page_${page.number}.png`);
+    await import_fs.promises.writeFile(outputPath, Buffer.from(image.data));
     const endTime = performance.now();
     const pageTime = endTime - startTime;
     totalTime += pageTime;
     pageCount++;
-    console.log(`${page.number} - rendered in ${pageTime.toFixed(2)} ms`);
+    if (verbose) {
+      console.log(`${page.number} - rendered in ${pageTime.toFixed(2)} ms`);
+    }
+    console.log(`saved ${outputPath}`);
   }
-  if (pageCount > 0) {
+  if (verbose && pageCount > 0) {
     const avgTimePerPage = totalTime / pageCount;
     const pagesPerSecond = pageCount / (totalTime / 1e3);
     console.log(`
