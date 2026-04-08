@@ -1,0 +1,16 @@
+{
+  "name": "pdf2png",
+  "version": "1.0.0",
+  "bin": {
+    "pdf2png": "./pdf2png.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "description": "",
+  "dependencies": {
+    "@hyzyla/pdfium": "^2.1.12",
+    "pdfkit": "^0.18.0",
+    "sharp": "^0.34.5"
+  }
+}

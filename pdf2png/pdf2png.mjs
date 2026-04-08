@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { PDFiumLibrary } from "@hyzyla/pdfium";
 import { promises as fs } from 'fs';
 import path from 'path';

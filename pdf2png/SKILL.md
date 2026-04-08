@@ -16,7 +16,9 @@ Converts PDF files to PNG images using PDFium library and Sharp image processing
 - PNG images saved to the specified output directory, named by page number (e.g., `1.png`, `2.png`)
 
 ## Usage
+
 ```bash
-node run.js <input.pdf> <output_dir>
+npm install # if depdencies not already installed
+npx pdf2png <input.pdf> <output_dir>
 ```
 
