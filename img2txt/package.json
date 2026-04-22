@@ -1,0 +1,19 @@
+{
+  "dependencies": {
+    "@tesseract.js-data/eng": "^1.0.0",
+    "tesseract.js": "^7.0.0"
+  },
+  "name": "img2txt",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "img2txt": "./img2txt.js"
+  },
+  "type": "module",
+  "author": "",
+  "license": "MIT",
+  "description": ""
+}
