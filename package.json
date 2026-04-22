@@ -1,0 +1,25 @@
+{
+  "name": "pdf-skills",
+  "version": "1.0.0",
+  "type": "module",
+  "bin": {
+    "pdf2txt": "./scripts/pdf2txt.mjs",
+    "pdf2png": "./scripts/pdf2png.mjs",
+    "img2txt": "./scripts/img2txt.mjs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "description": "PDF and image processing tools",
+  "dependencies": {
+    "@hyzyla/pdfium": "^2.1.12",
+    "@tesseract.js-data/eng": "^1.0.0",
+    "pdfjs-dist": "^3.11.174",
+    "pdfkit": "^0.18.0",
+    "sharp": "^0.34.5",
+    "tesseract.js": "^7.0.0"
+  }
+}
