@@ -28,11 +28,15 @@ async function main() {
   let inputFile;
   let outputDir;
   let verbose = false;
+  let dpi = 216;
 
   // Parse command line arguments
   for (let i = 2; i < process.argv.length; i++) {
     if (process.argv[i] === '-v') {
       verbose = true;
+    } else if (process.argv[i] === '--dpi' && process.argv[i + 1]) {
+      dpi = parseInt(process.argv[i + 1], 10);
+      i++;
     } else if (!inputFile) {
       inputFile = process.argv[i];
     } else if (!outputDir) {
@@ -41,9 +45,11 @@ async function main() {
   }
 
   if (!inputFile) {
-    console.error('Usage: node pdf2png.js [ -v ] <input.pdf> [output_dir]');
+    console.error('Usage: node pdf2png.mjs [ -v ] [ --dpi <dpi> ] <input.pdf> [output_dir]');
     process.exit(1);
   }
+
+  const scale = dpi / 72;
 
   const baseName = path.basename(inputFile).replace(/\.[^/.]+$/, '');
   if (!outputDir) {
@@ -84,7 +90,7 @@ async function main() {
 
     // Render PDF page to PNG image
     const image = await page.render({
-      scale: 3, // 3x scale (72 DPI is the default)
+      scale: scale,
       render: renderFunction,  // sharp function to convert raw bitmap data to PNG
     });
 
