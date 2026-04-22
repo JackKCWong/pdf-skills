@@ -45,8 +45,11 @@ async function main() {
     process.exit(1);
   }
 
+  const baseName = path.basename(inputFile).replace(/\.[^/.]+$/, '');
   if (!outputDir) {
-    outputDir = path.join(process.cwd(), path.basename(inputFile).replace(/\.[^/.]+$/, ''));
+    outputDir = path.join(process.cwd(), baseName);
+  } else {
+    outputDir = path.join(outputDir, baseName);
   }
 
   // Create output directory if it doesn't exist
