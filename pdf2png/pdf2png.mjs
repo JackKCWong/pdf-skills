@@ -67,9 +67,14 @@ async function main() {
   let totalTime = 0;
   let pageCount = 0;
 
-  for (const page of document.pages()) {
+  const pages = Array.from(document.pages());
+  const totalPages = pages.length;
+  const digits = String(totalPages).length;
+
+  for (let i = 0; i < pages.length; i++) {
+    const page = pages[i];
     if (verbose) {
-      console.log(`${page.number} - rendering...`);
+      console.log(`${i + 1} - rendering...`);
     }
     
     const startTime = performance.now();
@@ -81,7 +86,8 @@ async function main() {
     });
 
     // Save the PNG image to the output folder
-    const outputPath = path.resolve(`${outputDir}/page_${page.number}.png`);
+    const pageNum = String(i + 1).padStart(digits, '0');
+    const outputPath = path.resolve(`${outputDir}/page_${pageNum}.png`);
     await fs.writeFile(outputPath, Buffer.from(image.data));
     
     const endTime = performance.now();
