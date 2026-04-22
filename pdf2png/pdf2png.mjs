@@ -40,9 +40,13 @@ async function main() {
     }
   }
 
-  if (!inputFile || !outputDir) {
-    console.error('Usage: node pdf2png.js [ -v ] <input.pdf> <output_dir>');
+  if (!inputFile) {
+    console.error('Usage: node pdf2png.js [ -v ] <input.pdf> [output_dir]');
     process.exit(1);
+  }
+
+  if (!outputDir) {
+    outputDir = path.join(process.cwd(), path.basename(inputFile).replace(/\.[^/.]+$/, ''));
   }
 
   // Create output directory if it doesn't exist
